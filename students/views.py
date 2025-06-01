@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 
+<<<<<<< HEAD
 def home(request):
     return render(request, 'students/home.html')
 
@@ -26,3 +27,22 @@ def contact(request):
         return HttpResponse(f'Спасибо, {name}! Мы скоро свяжемся с вами по {email}.')
     return render(request, template_name='students/contact.html')
 
+=======
+#обьявляем контроллер и передаем обьект http(request)
+def example_view(request): 
+    # Ваш код для обработки запроса
+    # возвращает HttpResponse или другой объект
+    #render - функция которая возвращает html страницу 
+    # и отправляем путь до шаблона
+    return render(request, 'example.html')
+
+#пишем контроллер обрабатыващий различные запросы
+#(Контроллер всегдаспользует (request))
+def show_data(request):
+    if request.method == "GET":  # Check if request method is GET
+        return render(request, template_name='example.html')
+
+def show_data(request):
+    if request.method == "POST":  # Check if request method is GET
+        return HttpResponse("Data sent successfully")
+>>>>>>> 4c8d661fcdde86047e12f8fe9ea8ab23506eab11
