@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контактаная информация</title>
+</head>
+<body>
+    <h1>Связь токен</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <label for="name">Имя:</label>
+            <input type="text" name="name" placeholder="Ваше имя">
+        </div>
+        <div>
+            <laber for="message">Сообщение:</laber>
+            <textarea type="text" name="email" rows="5" placeholder="Ваш email"></textarea>    
+        </div>
+        <button type="submit">Отправить</button>
+    </form>    
+    
+</body>
+</html>
