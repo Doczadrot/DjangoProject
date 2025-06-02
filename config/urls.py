@@ -1,62 +1,75 @@
 """
-<<<<<<< HEAD
 Конфигурация URL для проекта config.
 
-Список `urlpatterns` направляет URL к представлениям. Подробнее:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
+Это главный файл URL-маршрутизации вашего Django проекта. 🚦
+Он как диспетчер на вокзале, который говорит, по какому пути
+отправить запрос пользователя, чтобы он попал в нужное место (представление).
+
+Список `urlpatterns` направляет URL к представлениям (views).
+Подробнее можно почитать тут:
+    https://docs.djangoproject.com/en/stable/topics/http/urls/
+
+Основные моменты:
+1. `from django.urls import path, include`: Импортируем нужные инструменты.
+   `path` - для создания простого маршрута.
+   `include` - для подключения маршрутов из других приложений (как папки с файлами).
+
+2. `from students import views`: Если у вас есть представления прямо в этом приложении
+   (хотя обычно они в своих приложениях, как `students.views`).
+
+3. `urlpatterns = [...]`: Список всех маршрутов вашего сайта.
+   Каждый `path(...)` - это отдельный маршрут.
+
 Примеры:
-Функциональные представления
-    1. Импортируйте: from my_app import views
-    2. Добавьте URL: path('', views.home, name='home')
-Класс-базированные представления
-    1. Импортируйте: from other_app.views import Home
-    2. Добавьте URL: path('', Home.as_view(), name='home')
-Включение других URLconf
-    1. Импортируйте функцию include: from django.urls import include, path
-    2. Добавьте URL: path('blog/', include('blog.urls'))
+- `path('admin/', admin.site.urls)`: Стандартный маршрут для админ-панели Django. 🎩
+- `path('', views.home, name='home')`: Маршрут для главной страницы.
+  - Первый аргумент (`''`) - это сам URL (пустая строка означает корень сайта).
+  - Второй аргумент (`views.home`) - функция-представление, которая обработает этот URL.
+  - Третий аргумент (`name='home'`) - имя маршрута, чтобы на него можно было ссылаться в шаблонах и коде.
+- `path('students/', include('students.urls', namespace='students'))`:
+  Подключает все URL-адреса из приложения `students` (из файла `students/urls.py`).
+  Все URL из `students.urls` будут начинаться с `students/` (например, `students/list/`).
+  `namespace='students'` помогает избегать конфликтов имен маршрутов между приложениями.
 """
 from django.contrib import admin
-"""
-Маршрутизатор проекта - URL-диспетчер 🌐
-Это как таблица содержания для всего сайта! 📖
-Здесь мы связываем:
-- URL-адреса (как названия глав) ➡️
-- Представления (как сами страницы) 📄
-Пример:
-path('about/', views.about) - когда заходим на /about,
-вызывается функция about из views.py
-"""
-
 from django.urls import path, include
-from students import views
+from django.conf import settings
+from django.conf.urls.static import static
+# Импортируем представления из приложения students, если они используются напрямую в этом файле
+# Если у вас есть представления home, about, contact в config/views.py, то импорт должен быть таким:
+# from . import views # или from config import views
+# Но судя по структуре, они скорее всего в students/views.py или других приложениях.
+# Для примера ниже, я предполагаю, что views.home, views.about, views.contact находятся в students.views
+from students import views as student_views # Используем псевдоним, чтобы было понятнее
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    # Маршрут для админ-панели Django
     path('admin/', admin.site.urls),
-    path('about/', views.about, name='about'),
+
+    # Маршруты для основных страниц сайта
+    # Предполагаем, что эти представления (home, about, contact) находятся в students/views.py
+    # Если они в другом месте, нужно будет скорректировать импорт и вызов
+    path('', student_views.home, name='home'),  # Главная страница
+    path('about/', student_views.about, name='about'),  # Страница "О нас"
+    path('contact/', student_views.contact, name='contact'),  # Страница "Контакты"
+
+    # Подключение URL-маршрутов из приложения 'students'
+    # Все URL, определенные в students/urls.py, будут доступны по префиксу 'students/'
+    # Например, если в students/urls.py есть path('all/', ...), то полный URL будет 'students/all/'
     path('students/', include('students.urls', namespace='students')),
-    path('contact/',views.contact, name='contact')
-]
-=======
-URL configuration for config project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
+    # Сюда можно добавлять другие маршруты для других приложений или страниц
+    # path('blog/', include('blog.urls', namespace='blog')),
 ]
->>>>>>> 4c8d661fcdde86047e12f8fe9ea8ab23506eab11
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Пример того, как могли бы выглядеть представления в students/views.py (для контекста):
+# def home(request):
+#     return HttpResponse("Это главная страница!")
+#
+# def about(request):
+#     return HttpResponse("Это страница о нас!")
+#
+# def contact(request):
+#     return HttpResponse("Это страница контактов!")

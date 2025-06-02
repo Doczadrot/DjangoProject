@@ -12,18 +12,19 @@ class Student(models.Model):
     age = models.IntegerField('Возраст')  # Числовое поле для возраста 🔢
 """
 
+from enum import unique
 from django.db import models
 
 class Student(models.Model):
     first_name = models.CharField(max_length=150, verbose_name="Имя")
-    last_name = models.CharField(max_length=150, verbose_name="Фамилия")
+    last_name = models.CharField(max_length=150, verbose_name="Фамилия", unique=True)
 
 
     #поля модели базы данных
-    age = models.IntegerField(help_text = 'Введите возраст студента') #для отображенгия числе
+    age = models.IntegerField(help_text='Введите возраст студента') #для отображенгия числе
     is_active = models.BooleanField(default=True)#является  ил студент актвным
     description = models.TextField (null=True, blank=True) #(описание) для отображения строки фиксированый длины
-    created_ad = models.DateTimeField() #предосталяет  дату  и вермя
+    created_ad = models.DateTimeField(auto_now=True) #предосталяет  дату  и вермя
     image = models.ImageField() # для хранения изображения
     # для создания поля внешнего ключа используется fotegen_key
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
@@ -33,7 +34,7 @@ class Student(models.Model):
     STATUS_CHOICES = [('draft', 'Draft'),
                       ('publushed', 'Published')]
 
-    status = models.CharField(max_length=10)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default = 'draft')
 
 
 
