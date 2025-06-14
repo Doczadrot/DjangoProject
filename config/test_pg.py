@@ -4,7 +4,7 @@ try:
     conn = psycopg2.connect(
         dbname="django_project",
         user="postgres",
-        password="1234",
+        password="202939",
         host="localhost",
         port="5432"
     )

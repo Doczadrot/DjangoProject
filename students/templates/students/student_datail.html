@@ -6,7 +6,9 @@
 </head>
 <body>
     <h1>Информация о студенте</h1>
-    <p>Имя: {{ student_name }}</p>
-    <p>Курс: {{ student_year }}</p>
+    <p>Имя: {{ student_first_name }}</p>
+    <p>Фамилия: {{ student_last_name }}</p>
+
+    <p>Курс: {{ student.get_year_display }}</p>
 </body>
 </html>

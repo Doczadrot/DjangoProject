@@ -8,5 +8,9 @@ app_name = 'students' #Название приложения для ссылки
 #path() - это функция, которая принимает три аргумента:
 urlpatterns = [
     path('about/',views.about, name='about'),
-    path('contact/',views.contact, name='contact')
+    path('contact/',views.contact, name='contact'),
+    path('example/', example_view, name='example'),
+    path('home/', views.home, name='home'),
+    path('student_datail/', views.student_datail, name='student_datail'),
+    path('student_list/', views.student_list, name='student_list'),
 ]
