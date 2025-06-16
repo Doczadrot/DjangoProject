@@ -18,17 +18,11 @@ def home(request):
 
 
 def student_datail(request):
-    student = Student.objects.filter(year='first').first()
-    if student:
-        context = {
+    student = Student.objects.get(id=1)
+    context = {
             'student': student,
         }
-    else:
-        context = {
-            'student_name': 'Студент не найден',
-            'student_year': 'Первый курс',
-        }
-    return render(request, template_name='students/home.html', context=context)
+    return render(request, template_name='students/student_datail.html', context=context)
 
 
 def about(request):
