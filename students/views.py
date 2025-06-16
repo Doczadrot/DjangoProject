@@ -17,8 +17,8 @@ def home(request):
     return render(request, template_name='students/home.html', context=context)
 
 
-def student_datail(request):
-    student = Student.objects.get(id=1)
+def student_datail(request, student_id):
+    student = Student.objects.get(id=student_id)
     context = {
             'student': student,
         }
@@ -61,7 +61,7 @@ def example_view(request):
 #         return render(request, template_name='example.html')
 #cозздаем контроллер для вариации показа туденктов на хтмл странице
 def student_list(request): #контроллер для списка студентов всегда использует request
-    students = Student.objects.all() #получаем все студентов из бд
+    students = Student.objects.all() #получаем всех студентов из бд
     context = {
         'students': students
     }

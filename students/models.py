@@ -56,7 +56,7 @@ class Student(models.Model):
     # Это то, что будет отображаться, например, в админ-панели Django при выводе списка студентов
     # Возвращает строку с именем и фамилией студента
     def __str__(self): #строковое представлени стр тут у нас будет возвращатсья имя фамиля
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.first_name} {self.last_name} - {self.get_year_display()}'
     
     # Класс Meta содержит метаданные для модели Student
     #заданим подяок сортирвоки оп фамилии
