@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'students', # Убедимся, что приложение students добавлено корректно
+    'students',
 ]
 
 MIDDLEWARE = [
