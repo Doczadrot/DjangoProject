@@ -11,8 +11,18 @@ class Student(models.Model):
     name = models.CharField('Имя', max_length=100)  # Поле для имени (как ячейка в таблице 📝)
     age = models.IntegerField('Возраст')  # Числовое поле для возраста 🔢
 """
+from django.db import models# Импортируем модуль models из Django для создания моделей базы данных
 
-from django.db import models # Импортируем модуль models из Django для создания моделей базы данных
+
+class MyModel(models.Model):
+    name = models.CharField(max_length=300)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
 
 # Определяем модель Student, которая будет представлять таблицу студентов в базе данных
 class Student(models.Model):
