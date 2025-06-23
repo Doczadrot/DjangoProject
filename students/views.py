@@ -1,10 +1,23 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Student, MyModel
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import ListView
 from django.urls import reverse_lazy
+from django.views.generic import ListView, DeleteView, DetailView
 
+
+
+class MyModelDeleteView(DeleteView):
+    model = MyModel
+    template_name = 'students/mymodel_confirm_delete.html'
+    success_url = reverse_lazy('students:mymodel_list')
+
+class MyModelUpdateView(UpdateView):
+    model = MyModel
+    fields = ['name', 'description']
+    template_name = 'students/mymodel_form.html'
+    success_url = reverse_lazy('students:mymodel_list')
 
 
 
@@ -19,6 +32,13 @@ class MyModelList(ListView):
     model = MyModel
     template_name = 'student/mymodel_list.html'
     context_object_name = 'mymodels'
+
+class MyModelDetailView(DetailView):
+    model = MyModel
+    template_name = 'students/mymodel_detail.html'
+    context_object_name = 'mymodel'
+
+
 
 def about(request):
     return render(request, template_name='student/about.html')
