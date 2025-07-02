@@ -32,39 +32,21 @@ class Student(models.Model):
     THIRD_YEAR = 'third'        # Константа для третьего курса
     FOURTH_YEAR = 'fourth'      # Константа для четвертого курса
 
-    # Определяем список выбора для поля "курс"
-    # Каждый элемент списка - это кортеж из двух значений:
-    # 1. Значение, которое будет храниться в базе данных (например, 'first')
-    # 2. Значение, которое будет отображаться пользователю (например, 'Первый курс')
+
     YEAR_IN_SCHOOL_CHOICE = [
         (FIRST_YEAR, 'Первый курс'),
         (SECOND_YEAR, 'Второй курс'),
         (THIRD_YEAR, 'Третий курс'),
         (FOURTH_YEAR, 'Четвертый курс')
          ]
-    
-    # Поле для имени студента
-    # models.CharField - текстовое поле
-    # max_length=150 - максимальная длина имени 150 символов
-    # verbose_name='Имя' - отображаемое имя поля в админ-панели и формах
+
     first_name = models.CharField(max_length=150, verbose_name='Имя')
-    
-    # Поле для фамилии студента
-    # Аналогично полю first_name
     last_name = models.CharField(max_length=150, verbose_name='Фамилия')
-    
-    # Поле для курса студента
-    # max_length=6 - максимальная длина (с запасом для возможных значений)
-    # choices=YEAR_IN_SCHOOL_CHOICE - указывает, что значения для этого поля должны выбираться из списка YEAR_IN_SCHOOL_CHOICE
-    # default=FIRST_YEAR - значение по умолчанию, если курс не указан
-    # verbose_name='Курс' - отображаемое имя поля
-    
+    email = models.EmailField()
     year = models.CharField(max_length=6, choices=YEAR_IN_SCHOOL_CHOICE,default=FIRST_YEAR, verbose_name='Курс')
+    enrollment_date = models.DateField()
 
 
-    # Метод __str__ определяет строковое представление объекта Student
-    # Это то, что будет отображаться, например, в админ-панели Django при выводе списка студентов
-    # Возвращает строку с именем и фамилией студента
     def __str__(self): #строковое представлени стр тут у нас будет возвращатсья имя фамиля
         return f'{self.first_name} {self.last_name} - {self.get_year_display()}'
     
