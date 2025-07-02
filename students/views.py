@@ -5,6 +5,20 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import ListView
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, DetailView
+from students. forms import StudentForm
+from students.models import Student, MyModel
+
+class StudentCreateView(CreateView):
+    model = Student
+    fields = ['first_name', 'last_name', 'year', 'email', 'enrollment_date']
+    template_name = 'students/student_form.html'
+    success_url = reverse_lazy('students:student_list')
+
+class StudentUpdateView(UpdateView):
+    model = Student
+    fields = ['first_name', 'last_name', 'year', 'email', 'enrollment_date']
+    template_name = 'students/student_form.html'
+    success_url = reverse_lazy('students:student_list')
 
 
 
@@ -30,7 +44,7 @@ class MyModelCreateView(CreateView):
 
 class MyModelList(ListView):
     model = MyModel
-    template_name = 'student/mymodel_list.html'
+    template_name = 'students/mymodel_list.html'
     context_object_name = 'mymodels'
 
 class MyModelDetailView(DetailView):
