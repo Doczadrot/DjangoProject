@@ -8,15 +8,18 @@ from django.views.generic import ListView, DeleteView, DetailView
 from students. forms import StudentForm
 from students.models import Student, MyModel
 
+
 class StudentCreateView(CreateView):
     model = Student
-    fields = ['first_name', 'last_name', 'year', 'email', 'enrollment_date']
+    #fields = ['first_name', 'last_name', 'year', 'email', 'enrollment_date']
+    form_class = StudentForm
     template_name = 'students/student_form.html'
     success_url = reverse_lazy('students:student_list')
 
 class StudentUpdateView(UpdateView):
+    form_class = StudentForm
     model = Student
-    fields = ['first_name', 'last_name', 'year', 'email', 'enrollment_date']
+    #fields = ['first_name', 'last_name', 'year', 'email', 'enrollment_date']
     template_name = 'students/student_form.html'
     success_url = reverse_lazy('students:student_list')
 
