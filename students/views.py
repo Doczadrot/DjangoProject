@@ -1,14 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Student, MyModel
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic import ListView
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, DetailView, View
 from students. forms import StudentForm
 from students.models import Student, MyModel
 from django.http import HttpResponseForbidden
+from students.forms import ContactForm
 
 
 class PromoteStudentView(LoginRequiredMixin, View): #LoginRequiredMixin - проверяем этим методом что бы пользователь был авторизован
@@ -40,7 +39,7 @@ class StudentListView(LoginRequiredMixin, ListView):
     context_object_name = 'students'
 
     def get_queryset(self):
-        if not self.request.user.has_perm('students.view_student')
+        if not self.request.user.has_perm('students.view_student'):
             return Student.objects.none()
         return Student.objects.all()
 
@@ -94,7 +93,7 @@ class MyModelDetailView(DetailView):
 
 
 def about(request):
-    return render(request, template_name='student/about.html')
+    return render(request, template_name='students/about.html')
 
 
 
@@ -122,10 +121,21 @@ def student_detail(request, student_id):
 
 def contact(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        return HttpResponse(f'Спасибо, {name}! Мы скоро свяжемся с вами по {email}.')
-    return render(request, template_name='students/contact.html')
+        form = ContactForm(request.POST) # Создаем экземпляр формы с данными из POST-запроса
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            # Здесь вы можете отправить email или сохранить сообщение в базу данных
+            # Например: send_mail('Сообщение с сайта', message, email, ['ваш_email@example.com'])
+            return HttpResponse(f'Спасибо, {name}! Мы скоро свяжемся с вами по {email}.')
+        else:
+            # Если форма недействительна, она будет отображена снова с ошибками
+            pass # Нет необходимости делать что-либо, форма будет передана в шаблон
+    else:
+        form = ContactForm() # Создаем пустую форму для GET-запроса
+
+    return render(request, 'students/contact.html', context={'form': form})
 
 #обьявляем контроллер и передаем обьект http(request)
 def example_view(request): 

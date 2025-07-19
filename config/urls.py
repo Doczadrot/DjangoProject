@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -14,10 +13,7 @@ from students import views as student_views # Используем псевдо�
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', student_views.home, name='home'),  # Главная страница
-    path('about/', student_views.about, name='about'),  # Страница "О нас"
-    path('contact/', student_views.contact, name='contact'),  # Страница "Контакты"
-    path('students/', include('students.urls', namespace='students')),
+   path('students/', include('students.urls', namespace='students')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
