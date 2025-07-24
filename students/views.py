@@ -8,6 +8,9 @@ from students. forms import StudentForm
 from students.models import Student, MyModel
 from django.http import HttpResponseForbidden
 from students.forms import ContactForm
+from django.core.cache import cache
+from .models import Student
+from .services import StudentService
 
 
 class PromoteStudentView(LoginRequiredMixin, View): #LoginRequiredMixin - проверяем этим методом что бы пользователь был авторизован
@@ -138,7 +141,7 @@ def contact(request):
     return render(request, 'students/contact.html', context={'form': form})
 
 #обьявляем контроллер и передаем обьект http(request)
-def example_view(request): 
+def example_view(request):
     return render(request, template_name='students/example.html')
 
 
@@ -147,5 +150,35 @@ def student_list(request): #контроллер для списка студе�
     context = {
         'students': students}
     return render(request, template_name='students/student_list.html', context=context)
+
+def my_view(request):
+    data = cache.get('my_key')
+
+    if not data:
+        data = 'Какая то информация от куда либо'
+        cache.set('my_key', data, 60 * 15)
+    return HttpResponse(data)
+
+
+class StudentDetailView(DetailView):
+    model = Student
+    template_name = 'students/student_detail.html' #Шаблон
+    context_object_name = 'student'
+
+    #если нам нужно вывести доллнительный контект то нужно переопределить контект
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        student_id = self.object.id # получаем тудент айти из селф
+
+
+        #далее через контекст
+        context['full_name'] = StudentService.get_full_name(student_id)#
+        context['average_grade'] = StudentService.calculate_average(student_id)# расширяем
+        context['has_passed'] = StudentService.has_passed(student_id)#
+
+        return context
+
+
 
 

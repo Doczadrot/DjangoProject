@@ -18,7 +18,6 @@ __pycache__/
 venv/
 __pycache__/
 *.pyc
-db.sqlite3
 *.log
 *.swp
 *.swo
