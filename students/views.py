@@ -130,7 +130,7 @@ def contact(request):
             email = form.cleaned_data['email']
             message = form.cleaned_data['message']
             # Здесь вы можете отправить email или сохранить сообщение в базу данных
-            # Например: send_mail('Сообщение с сайта', message, email, ['ваш_email@example.com'])
+            # Например: send_mail('Сообщение с сайта', message, email,
             return HttpResponse(f'Спасибо, {name}! Мы скоро свяжемся с вами по {email}.')
         else:
             # Если форма недействительна, она будет отображена снова с ошибками
